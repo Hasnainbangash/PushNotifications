@@ -23,6 +23,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
             UNUserNotificationCenter.current().delegate = self
             Messaging.messaging().delegate = self
         }
+        application.registerForRemoteNotifications()
         return true
     }
     
@@ -34,12 +35,14 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     // Called when a notification is received while the app is open (in foreground).
     // We can choose to show a banner, play sound, etc.
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        
+        completionHandler([.banner, .list, .sound])
     }
     
     // Called when the user taps on a notification or interacts with it.
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
-        
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        NotificationCenter.default.post(name: Notification.Name("didReceiveRemoteNotification"), object: nil, userInfo: userInfo)
+        completionHandler()
     }
     
     // This runs when Firebase gives us a token to send notifications to this phone.
