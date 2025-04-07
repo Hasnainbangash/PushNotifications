@@ -15,14 +15,12 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     // Called when the app finishes launching. We use it to set up Firebase.
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
-        if #available(iOS 10.0, *) {
-            // Requesting the permission from the user
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-                print("Permission granted: \(granted)")
-            }
-            UNUserNotificationCenter.current().delegate = self
-            Messaging.messaging().delegate = self
+        // Requesting the permission from the user
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            print("Permission granted: \(granted)")
         }
+        UNUserNotificationCenter.current().delegate = self
+        Messaging.messaging().delegate = self
         application.registerForRemoteNotifications()
         return true
     }
