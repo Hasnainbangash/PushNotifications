@@ -16,7 +16,12 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
         if #available(iOS 10.0, *) {
-            
+            // Requesting the permission from the user
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                print("Permission granted: \(granted)")
+            }
+            UNUserNotificationCenter.current().delegate = self
+            Messaging.messaging().delegate = self
         }
         return true
     }
