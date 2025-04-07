@@ -15,6 +15,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     // Called when the app finishes launching. We use it to set up Firebase.
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
+        if #available(iOS 10.0, *) {
+            
+        }
         return true
     }
     
@@ -37,7 +40,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     // This runs when Firebase gives us a token to send notifications to this phone.
     // This token is used to send push notifications to this specific app instance.
     @objc func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        
+        // We function we want to do that if soon as the registration tokens is received from firebase we want to print it out because we need that token in order to send push notifications
+        print("Firebase token: \(String(describing: fcmToken))")
     }
     
 }
